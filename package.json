@@ -9,6 +9,7 @@
   "author": "pandafulmanda",
   "license": "MIT",
   "dependencies": {
+    "express": "^4.10.4",
     "johnny-five": "^0.8.32"
   }
 }
