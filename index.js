@@ -1,17 +1,19 @@
 'use strict';
 var express = require('express'),
   app = express(),
-  server;
+  server = require('http').createServer(app);
 
-app.get('/', function (request, response){
+// app.get('/', function (request, response){
 
-  require('./light');
-  response.send('Blink the led');
+//   require('./light');
+//   response.send('Blink the led');
 
-});
+// });
 
-server = app.listen(3000, function(){
+app.use(express.static(__dirname + '/client'));
+
+server = server.listen(3000, function(){
 
   console.log('Yo dawg, yo server is running');
-  
+
 });
