@@ -1,43 +1,50 @@
 (function(){
   var lightBulbSocket = io('/light-bulb'),
+    sockBot = io('/sock-bot'),
     lightBulbToggle = document.querySelector('[data-light-toggle]'),
     botDirectionKeys = {
       '37' : 'left',
-      '38' : 'up',
+      '38' : 'forward',
       '39' : 'right',
-      '40' : 'down'
+      '40' : 'backward'
     },
-    stopBot = new Event('stopBot'),
+    driveBotEmit = _.debounce(startDriving, 100, {leading: true, trailing: false}),
     stopBotEmit = _.debounce(stopDriving, 100, {leading: false});
+
+
 
   lightBulbToggle.addEventListener('click', function(event){
     toggleLight();
   });
 
 
-  window.onkeydown = function(event){
+  window.onkeydown = function(keyEvent){
 
-    var direction = getDirection(event);
+    var direction = getDirection(keyEvent);
 
     if(!direction){
       return;
     }
 
-    stopBotEmit(event);      
+    stopBotEmit(keyEvent);
+
+    if(keyEvent.repeat){      
+      driveBotEmit(direction);
+    }
   };
 
-  window.addEventListener('stopBot', function(event){
-    // console.log(event);
-    console.log('stopBot');
-  });
 
   function toggleLight(){
     lightBulbSocket.emit('switch');
   }
 
+  function startDriving(direction){
+    sockBot.emit('drive', direction);
+  }
+
   function stopDriving(keyEvent){
     if(keyEvent.repeat){
-      window.dispatchEvent(stopBot);
+      sockBot.emit('stop');
     }
   }
 

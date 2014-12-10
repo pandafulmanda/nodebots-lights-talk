@@ -1,19 +1,28 @@
 'use strict';
-var express = require('express'),
+
+var five = require('johnny-five'),
+  express = require('express'),
+  socket = require('socket.io'),
+
+  lightBulb = require('./light'),
+  socketBot = require('./socketBot'),
+
   app = express(),
   server = require('http').createServer(app),
-  io = require('socket.io')(server),
+  io = socket(server),
+
   lightBulbSocket = io.of('/light-bulb'),
-  lightBulb = require('./light');
+  socketBotSocket = io.of('/sock-bot'),
+  board = new five.Board();
 
 
+lightBulb.connectBoard(board);
 lightBulb.connectSocket(lightBulbSocket);
-// app.get('/', function (request, response){
 
-//   require('./light');
-//   response.send('Blink the led');
 
-// });
+socketBot.connectBoard(board);
+socketBot.connectSocket(socketBotSocket);
+
 
 app.use(express.static(__dirname + '/client'));
 
