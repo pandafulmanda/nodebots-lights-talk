@@ -1,7 +1,8 @@
 (function(){
+
   var lightBulbSocket = io('/light-bulb'),
     sockBot = io('/sock-bot'),
-    lightBulbToggle = document.querySelector('[data-light-toggle]'),
+
     botDirectionKeys = {
       '37' : 'left',
       '38' : 'forward',
@@ -12,11 +13,38 @@
     stopBotEmit = _.debounce(stopDriving, 100, {leading: false});
 
 
+  document.addEventListener('mousedown', function(event){
+    if(event.target === event.currentTarget){
+      event.stopPropagation();
+      return;
+    }
 
-  lightBulbToggle.addEventListener('click', function(event){
-    toggleLight();
+    if(event.target.dataset.light){
+      toggleLight();
+    }
+
+    if(event.target.dataset.bot){
+      driveBotEmit(event.target.dataset.bot);
+    }
   });
 
+
+  document.addEventListener('touchstart', function(event){
+    if(event.target === event.currentTarget){
+      event.stopPropagation();
+      return;
+    }
+
+    if(event.target.dataset.bot){
+      driveBotEmit(event.target.dataset.bot);
+    }
+  });
+
+
+  document.addEventListener('mouseup', endPressHandler);
+  document.addEventListener('touchend', endPressHandler);
+  document.addEventListener('touchcancel', endPressHandler);
+  document.addEventListener('touchleave', endPressHandler);
 
   window.onkeydown = function(keyEvent){
 
@@ -34,6 +62,18 @@
   };
 
 
+  function endPressHandler(pressEvent){
+    if(pressEvent.target === pressEvent.currentTarget){
+      pressEvent.stopPropagation();
+      return;
+    }
+
+    if(pressEvent.target.dataset.bot){
+      stopBotEmit(pressEvent, true);
+    }
+  }
+
+
   function toggleLight(){
     lightBulbSocket.emit('switch');
   }
@@ -42,8 +82,8 @@
     sockBot.emit('drive', direction);
   }
 
-  function stopDriving(keyEvent){
-    if(keyEvent.repeat){
+  function stopDriving(keyEvent, force){
+    if(force || keyEvent.repeat){
       sockBot.emit('stop');
     }
   }
