@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Blink the light</title>
+
+    <!-- My fav Google font (for now) -->
+    <link href='http://fonts.googleapis.com/css?family=Lato:100,300,400,700,900,100italic,300italic,400italic,700italic,900italic' rel='stylesheet' type='text/css'>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="assets/styles/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/styles/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="assets/styles/custom.css">
+
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="row control-section">
+        <div class="col-xs-12 text-center">
+          <h1>Lights!</h1>
+          <button class="btn btn-primary btn-outline btn-lg" data-light="lightbulb">Toggle Light</button>
+          <button class="btn btn-primary btn-outline btn-lg" data-light="christmastree">Toggle Party</button>
+        </div>
+      </div>
+      <div class="row control-section">
+        <div class="col-xs-12 text-center">
+          <h1>Robot</h1>
+          <button class="btn btn-primary btn-outline btn-lg" data-bot="right">Right</button>
+          <button class="btn btn-primary btn-outline btn-lg" data-bot="left">Left</button>
+          <button class="btn btn-primary btn-outline btn-lg" data-bot="forward">Forward</button>
+          <button class="btn btn-primary btn-outline btn-lg" data-bot="backward">Backward</button>
+        </div>
+        <div class="col-xs-12  text-center">
+          <h2>Who's in control?</h2>
+          <p><strong>{{person}}</strong></p>
+          <div class="form-horizontal">
+
+            <div class="form-group">
+              <div class="col-sm-4 col-xs-12 col-sm-offset-3">
+                <input type="text" name="name" placeholder="Your Name" class="form-control input-lg">
+              </div>
+              <div class="col-sm-2 col-xs-12">
+                <input type="submit" value="Enter" class="btn btn-primary btn-outline btn-lg col-xs-12">
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+
+  <script type="text/javascript" src="/assets/js/lodash.js"></script>
+  <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+  <script type="text/javascript" src="/assets/js/main.js"></script>
+</html>
