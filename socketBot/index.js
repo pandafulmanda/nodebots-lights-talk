@@ -6,7 +6,9 @@ var five = require('johnny-five'),
 exports.connectBoard = function(board){
 
   board.on('ready', function(){
-    bot = new BotBot();
+    var botBoard = this;
+
+    bot = new BotBot(botBoard);
   });
 
 };
@@ -28,10 +30,20 @@ exports.connectSocket = function(namespaceSocket){
 };
 
 
-function BotBot(){
+function BotBot(botBoard){
 
-  this.leftWheel  = new five.Servo({ pin:  9, type: 'continuous' }).stop();
-  this.rightWheel = new five.Servo({ pin: 10, type: 'continuous'  }).stop();
+  // Default the pins for the wheels to ones that can output "PWM" on the Arduino
+  var leftWheelPin = 9,
+    rightWheelPin = 10;
+
+  // If the robot is on the spark board, we need to change the pins
+  if(botBoard.port === 'spark-io'){
+    leftWheelPin = 'A0';
+    rightWheelPin = 'A1';
+  }
+
+  this.leftWheel  = new five.Servo({ pin:  leftWheelPin, type: 'continuous', board: botBoard }).stop();
+  this.rightWheel = new five.Servo({ pin: rightWheelPin, type: 'continuous', board: botBoard }).stop();
 
 }
 

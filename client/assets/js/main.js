@@ -9,10 +9,11 @@
       '39' : 'right',
       '40' : 'backward'
     },
-    driveBotEmit = _.debounce(startDriving, 100, {leading: true, trailing: false}),
-    stopBotEmit = _.debounce(stopDriving, 100, {leading: false});
+    driveBotEmit = _.debounce( _startDriving, 100, {leading: true, trailing: false}),
+    stopBotEmit = _.debounce( _stopDriving, 100, {leading: false});
 
 
+  // whenever something is clicked or touched
   document.addEventListener('mousedown', function(event){
     if(event.target === event.currentTarget){
       event.stopPropagation();
@@ -20,31 +21,21 @@
     }
 
     if(event.target.dataset.light){
-      toggleLight();
+      toggleLight([event.target.dataset.light]);
     }
 
     if(event.target.dataset.bot){
       driveBotEmit(event.target.dataset.bot);
     }
   });
+  // handleButtonStart is the same as the function on mousedown above.
+  document.addEventListener('touchstart', handleButtonStart);
 
-
-  document.addEventListener('touchstart', function(event){
-    if(event.target === event.currentTarget){
-      event.stopPropagation();
-      return;
-    }
-
-    if(event.target.dataset.bot){
-      driveBotEmit(event.target.dataset.bot);
-    }
-  });
-
-
-  document.addEventListener('mouseup', endPressHandler);
-  document.addEventListener('touchend', endPressHandler);
-  document.addEventListener('touchcancel', endPressHandler);
-  document.addEventListener('touchleave', endPressHandler);
+  // On button press end, the robot 
+  document.addEventListener('mouseup', endRobotPressHandler);
+  document.addEventListener('touchend', endRobotPressHandler);
+  document.addEventListener('touchcancel', endRobotPressHandler);
+  document.addEventListener('touchleave', endRobotPressHandler);
 
   window.onkeydown = function(keyEvent){
 
@@ -62,7 +53,40 @@
   };
 
 
-  function endPressHandler(pressEvent){
+
+
+  function handleButtonStart(event){
+    if(event.target === event.currentTarget){
+      event.stopPropagation();
+      return;
+    }
+
+    if(event.target.dataset.light){
+      toggleLight([event.target.dataset.light]);
+    }
+
+    if(event.target.dataset.bot){
+      driveBotEmit(event.target.dataset.bot);
+    }
+  }
+
+
+
+  function toggleLight(light){
+
+    var light = light || ['lightbulb'];
+
+    lightBulbSocket.emit('switch', light);
+  }
+
+
+
+  // Robot things
+  function getDirection(keyEvent){
+    return botDirectionKeys[keyEvent.which];
+  }
+
+  function endRobotPressHandler(pressEvent){
     if(pressEvent.target === pressEvent.currentTarget){
       pressEvent.stopPropagation();
       return;
@@ -73,23 +97,16 @@
     }
   }
 
-
-  function toggleLight(){
-    lightBulbSocket.emit('switch');
-  }
-
-  function startDriving(direction){
+  // Both of the following are "debounced",
+  // meaning they can only happen once within the defined time.
+  function _startDriving(direction){
     sockBot.emit('drive', direction);
   }
 
-  function stopDriving(keyEvent, force){
+  function _stopDriving(keyEvent, force){
     if(force || keyEvent.repeat){
       sockBot.emit('stop');
     }
-  }
-
-  function getDirection(keyEvent){
-    return botDirectionKeys[keyEvent.which];
   }
 
 }());
