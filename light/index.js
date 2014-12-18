@@ -13,15 +13,22 @@ exports.connectBoard = function(board){
 };
 
 exports.connectSocket = function(namespaceSocket){
+  // For the socket about lights
   namespaceSocket.on('connection', function(socket){
+
+    // When the switch message comes through,
+    // loop through the lights that are tagged,
+    // and turn them on
     socket.on('switch', function(data){
       data.forEach(turnOnLightByName);
     });
   });
 };
 
+
 function turnOnLightByName(lightName){
   if(lights[lightName]){
+    // toggle is a method on the relay API from johnny-five
     lights[lightName].toggle();
   }
 }

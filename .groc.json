@@ -1,0 +1,4 @@
+{
+  "glob": ["**/*.js", "**/*.html","README.md"],
+  "except" : ["node_modules/**"]
+}

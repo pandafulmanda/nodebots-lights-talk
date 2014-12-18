@@ -1,0 +1,94 @@
+<!DOCTYPE html><html lang="en"><head><title>socketBot/index</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../"><meta name="groc-document-path" content="socketBot/index"><meta name="groc-project-path" content="socketBot/index.js"><link rel="stylesheet" type="text/css" media="all" href="../assets/style.css"><script type="text/javascript" src="../assets/behavior.js"></script><body><div id="meta"><div class="file-path">socketBot/index.js</div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-pi">'use strict'</span>;
+
+<span class="hljs-keyword">var</span> five = <span class="hljs-built_in">require</span>(<span class="hljs-string">'johnny-five'</span>),
+  bot;
+
+exports.connectBoard = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(board)</span></span>{
+
+  board.on(<span class="hljs-string">'ready'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+    <span class="hljs-keyword">var</span> botBoard = <span class="hljs-keyword">this</span>;
+
+    bot = <span class="hljs-keyword">new</span> BotBot(botBoard);
+  });
+
+};
+
+exports.connectSocket = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(namespaceSocket)</span></span>{
+  namespaceSocket.on(<span class="hljs-string">'connection'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(socket)</span></span>{
+    socket.on(<span class="hljs-string">'drive'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(direction)</span></span>{
+
+      bot.drive(direction);
+
+    });
+
+    socket.on(<span class="hljs-string">'stop'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(data)</span></span>{
+
+      bot.stop();
+
+    });
+  });
+};
+
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">BotBot</span><span class="hljs-params">(botBoard)</span></span>{</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Default the pins for the wheels to ones that can output &quot;PWM&quot; on the Arduino</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-keyword">var</span> leftWheelPin = <span class="hljs-number">9</span>,
+    rightWheelPin = <span class="hljs-number">10</span>;</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>If the robot is on the spark board, we need to change the pins</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-keyword">if</span>(botBoard.port === <span class="hljs-string">'spark-io'</span>){
+    leftWheelPin = <span class="hljs-string">'A0'</span>;
+    rightWheelPin = <span class="hljs-string">'A1'</span>;
+  }
+
+  <span class="hljs-keyword">this</span>.leftWheel  = <span class="hljs-keyword">new</span> five.Servo({ pin:  leftWheelPin, type: <span class="hljs-string">'continuous'</span>, board: botBoard }).stop();
+  <span class="hljs-keyword">this</span>.rightWheel = <span class="hljs-keyword">new</span> five.Servo({ pin: rightWheelPin, type: <span class="hljs-string">'continuous'</span>, board: botBoard }).stop();
+
+}
+
+BotBot.prototype.stop = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+
+  <span class="hljs-keyword">this</span>.leftWheel.stop();
+  <span class="hljs-keyword">this</span>.rightWheel.stop();
+
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+};
+
+BotBot.prototype.drive = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(direction)</span></span>{
+
+  <span class="hljs-keyword">var</span> drive = {
+    left : _driveLeft,
+    right : _driveRight,
+    forward : _driveForward,
+    backward : _driveBackward
+  };
+
+  <span class="hljs-keyword">return</span> drive[direction].call(<span class="hljs-keyword">this</span>);
+};
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">_driveLeft</span><span class="hljs-params">()</span></span>{
+
+  <span class="hljs-keyword">this</span>.leftWheel.ccw();
+  <span class="hljs-keyword">this</span>.rightWheel.ccw();
+
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">_driveRight</span><span class="hljs-params">()</span></span>{
+
+  <span class="hljs-keyword">this</span>.leftWheel.cw();
+  <span class="hljs-keyword">this</span>.rightWheel.cw();
+
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">_driveForward</span><span class="hljs-params">()</span></span>{
+
+  <span class="hljs-keyword">this</span>.leftWheel.ccw();
+  <span class="hljs-keyword">this</span>.rightWheel.cw();
+
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">_driveBackward</span><span class="hljs-params">()</span></span>{
+
+  <span class="hljs-keyword">this</span>.leftWheel.cw();
+  <span class="hljs-keyword">this</span>.rightWheel.ccw();
+
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+}</div></div></div></div></body></html>

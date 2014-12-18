@@ -7,7 +7,7 @@ var five = require('johnny-five'),
   dotenv = require('dotenv'),
 
   // load output and input modules
-  lightBulb = require('./light'),
+  lights = require('./light'),
   twitterInput = require('./twitter'),
 
   // set the server and socket
@@ -16,7 +16,7 @@ var five = require('johnny-five'),
   io = socket(server),
 
   // set up sockets
-  lightBulbSocket = io.of('/light-bulb'),
+  lightsSocket = io.of('/lights'),
 
   // make a new johnny five instance to interface with the Arduino
   arduino = new five.Board();
@@ -24,10 +24,13 @@ var five = require('johnny-five'),
 // load environment variables
 dotenv.load();
 
+// Set up the arduino board to have light objects when it's ready
+lights.connectBoard(arduino);
+// Set up the lights with the lights socket
+// so that the lights API will be ready for messages sent through the lights socket
+lights.connectSocket(lightsSocket);
 
-lightBulb.connectBoard(arduino);
-lightBulb.connectSocket(lightBulbSocket);
-
+// Connect the Twitter so that it's an input that will send messages to the lights socket as well.
 twitterInput.connectInputSocket();
 
 // serve up files from the client folder

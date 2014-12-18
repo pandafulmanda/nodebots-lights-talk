@@ -1,0 +1,32 @@
+<!DOCTYPE html><html lang="en"><head><title>twitter/index</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../"><meta name="groc-document-path" content="twitter/index"><meta name="groc-project-path" content="twitter/index.js"><link rel="stylesheet" type="text/css" media="all" href="../assets/style.css"><script type="text/javascript" src="../assets/behavior.js"></script><body><div id="meta"><div class="file-path">twitter/index.js</div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-keyword">var</span> io = <span class="hljs-built_in">require</span>(<span class="hljs-string">'socket.io-client'</span>),
+  _ = <span class="hljs-built_in">require</span>(<span class="hljs-string">'lodash'</span>),
+  twitter = <span class="hljs-built_in">require</span>(<span class="hljs-string">'twitter'</span>),
+
+  twitterKeys, twit, lightBulbSocket;</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>load environment variables into Twitter keys</p></div></div><div class="code"><div class="wrapper">twitterKeys = {
+  consumer_key: process.env.TWITTER_KEY,
+  consumer_secret: process.env.TWITTER_SECRET,
+  access_token_key: process.env.TWITTER_ACCESS_KEY,
+  access_token_secret: process.env.TWITTER_ACCESS_SECRET
+};</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>connect Twitter to configured API</p></div></div><div class="code"><div class="wrapper">twit = <span class="hljs-keyword">new</span> twitter(twitterKeys);
+
+
+exports.connectInputSocket = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+
+  lightBulbSocket = io(<span class="hljs-string">'http://localhost:'</span>+process.env.PORT+<span class="hljs-string">'/light-bulb'</span>);
+
+  twit.stream(<span class="hljs-string">'statuses/filter'</span>, {track: [<span class="hljs-string">'HoustonJS'</span>]}, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(stream)</span> </span>{
+      stream.on(<span class="hljs-string">'data'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(tweetData)</span> </span>{</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>get the text of hashtags in this Tweet</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-keyword">var</span> hashtags = _.pluck(tweetData.entities.hashtags, <span class="hljs-string">'text'</span>);</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>emit a switch message with an array of lights to switch on</p></div></div><div class="code"><div class="wrapper">        lightBulbSocket.emit(<span class="hljs-string">'switch'</span>, whichLight(hashtags));
+      });
+  });
+
+};
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">whichLight</span><span class="hljs-params">(hashtags)</span></span>{
+
+  <span class="hljs-keyword">var</span> lightOutputs = [<span class="hljs-string">'christmastree'</span>, <span class="hljs-string">'lightbulb'</span>],
+    lights = _(hashtags).map(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(tag)</span></span>{
+      <span class="hljs-keyword">return</span> tag.toLowerCase();
+    }).intersection(lightOutputs).value();
+
+  <span class="hljs-keyword">return</span> lights;
+}</div></div></div></div></body></html>

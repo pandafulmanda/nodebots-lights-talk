@@ -1,6 +1,6 @@
 (function(){
 
-  var lightBulbSocket = io('/light-bulb');
+  var lightsSocket = io('/lights');
 
   // whenever something is clicked or touched
   document.addEventListener('mousedown', handleButtonStart);
@@ -14,17 +14,16 @@
       return;
     }
 
+    // If there is a light button being pressed...
     if(event.target.dataset.light){
       toggleLight([event.target.dataset.light]);
     }
   }
 
 
+  // send a message with what light to turn on
   function toggleLight(light){
-
-    var light = light || ['lightbulb'];
-
-    lightBulbSocket.emit('switch', light);
+    lightsSocket.emit('switch', light);
   }
 
 
