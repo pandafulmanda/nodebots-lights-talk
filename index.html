@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+
+    <title>JavaScript &amp; Robots</title>
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="stylesheet" href="revealjs/css/reveal.min.css">
+    <link rel="stylesheet" href="revealjs/css/theme/sky.css" id="theme">
+
+    <!-- For syntax highlighting -->
+    <link rel="stylesheet" href="revealjs/lib/css/zenburn.css">
+
+    <!--[if lt IE 9]>
+    <script src="revealjs/lib/js/html5shiv.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="reveal">
+
+      <div class="slides">
+
+        <section>
+          <h1>JavaScript &amp; "Robots"</h1>
+          <aside class="notes">
+            Robots/physical computing/Internet of Things
+          </aside>
+        </section>
+
+        <section>
+          <h2>What do you want to build?</h2>
+        </section>
+
+        <section>
+          <h2><strong>#HoustonJS</strong></h2>
+          <p>and</p>
+          <p><strong>#christmastree</strong> or <strong>#lightbulb</strong></p>
+          <p class="fragment" style="margin-top:4em">10.1.10.79:3000</p>
+          <aside class="notes">
+            Show off browser, and also controlling from phone.
+          </aside>
+        </section>
+
+        <section>
+          <h2>Breakdown</h2>
+          <ul>
+            <li>Lights</li>
+            <li>Relays</li>
+            <li>Board</li>
+            <li>JavaScript Framework</li>
+            <li>Browser &amp; Twitter</li>
+          </ul>
+        </section>
+
+        <section>
+          <section>
+            <h2>Lights</h2>
+            <p><i>Outputs</i></p>
+          </section>
+          <aside class="notes">Show and explain outputs, Christmas lights, servos, etc, Motors, Fans, Browser
+          </aside>
+        </section>
+
+        <section>
+          <section>
+            <h2>Relays</h2>
+            <p><i>A physical switch we can control through code</i></p>
+          </section>
+          <section>
+            <h2>How does a relay work?</h2>
+          </section>
+          <section>
+            <h2>Ideas for how to use relays...</h2>
+            <aside class="notes">Refer to previous audience idears...disco ball/party mode, blinds, air conditioner, coffee machines, Christmas light sequences</aside>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <h2>Board</h2>
+            <p><i>Microcontroller</i></p>
+          </section>
+          <section>
+            <p><i>Like frameworks</i></p>
+            <ul>
+              <li>Spark</li>
+              <li>Tessel</li>
+              <li>Espruino</li>
+              <li>Electric Imp</li>
+            </ul>
+          </section>
+          <section>
+            <h2>Shields</h2>
+            <p><i>Like our libraries/modules/packages for hardware</i></p>
+            <aside class="notes">
+              <p>And other hardware modules like the relay shield analogous to JS modules, made up of helpful circuits.  Ethernet, motors, battery, etc...</p>
+            </aside>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <h2>JavaScript Framework</h2>
+            <p><i>But first, why JavaScript?</i></p>
+            <aside class="notes">Ask audience</aside>
+          </section>
+          <section>
+            <p><i>Rick Waldron</i>, author of Johnny-Five</p>
+            <video controls="" name="media" id="rick-robot" data-start-time='115' data-end-time='160'><source src="http://tenconf.s3.amazonaws.com/Node/Rick_Robot.m4v" type="video/x-m4v"></video>
+          </section>
+          <section>
+            <p>Also...</p>
+            <p class="fragment">Lots of different libraries</p>
+            <p class="fragment">Browser as an input and output</p>
+            <aside class="notes">for everything from UI to utility like lodash</aside>
+          </section>
+          <section>
+            <h2>How?</h2>
+            <ul class="fragment">
+              <li><p><a target="_blank" href="https://github.com/voodootikigod/node-serialport">node-serialport</a></p></li>
+              <li><p><a target="_blank" href="https://github.com/jgautier/firmata">firmata ported to JavaScript</a></p></li>
+              <li><a target="_blank" href="https://github.com/rwaldron/johnny-five">johnny-five</a>, <a target="_blank" href="https://github.com/hybridgroup/cylon/">cylon.js</a>, etc...</li>
+            </ul>
+          </section>
+          <section>
+            <h2>The <a target="_blank" href="http://www.voodootikigod.com/nodebots-the-rise-of-js-robotics/">inspiration</a></h2>
+            <pre><code data-trim contenteditable>
+$("livingroom").bind("motion", function() {
+  $(this).find("lights").brightness("75%").dimAfter("120s");
+});
+            </code></pre>
+          </section>
+          <aside class="notes">
+            <p>From C++ to JavaScript.</p>
+            <ul>
+              <li>Binding between computer and board</li>
+              <li>protocol for computer to talk to the board</li>
+              <li>APIs to talk to different things that plug into the pins</li>
+            </ul>
+          </aside>
+        </section>
+
+        <section>
+          <h2>Browser &amp; Twitter</h2>
+          <p><i>Inputs</i></p>
+          <p>Endless possibilities!</p>
+          <aside class="notes">Buttons, Joysticks, Light, range, accelerometers, motion sensors, Temperature, relative humidity, Leap Motion, Wii NunChucks</aside>
+        </section>
+
+        <section>
+          <section>
+            <h2>Let's dive into <a target="_blank" href="https://github.com/pandafulmanda/nodebots-lights-talk">the code</a>...</h2>            
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <h2>Let's code one right now</h2>
+          </section>
+          <section>
+            <pre><code data-trim contenteditable>
+var five = require("johnny-five"),
+  board, led;
+
+board = new five.Board();
+
+board.on("ready", function() {
+
+  // Create a standard `led` hardware instance
+  led = new five.Led({
+    pin: 13
+  });
+
+  // "strobe" strobes the light
+  led.strobe();
+
+});
+            </code></pre>
+            <small>See also <a target="_blank" href="https://github.com/rwaldron/johnny-five/blob/master/docs/led-strobe.md">docs for johnny-five LED strobe</a></small>
+          </section>
+        </section>
+
+        <section>
+          <h2>Beep-boop</h2>
+          <p><i>Chasis, servos, and power</i></p>
+          <p><a target="_blank" href="https://github.com/makenai/sumobot-jr">Our robot guest friend</a></p>
+        </section>
+
+
+        <section>
+          <section>
+            <h2>Now What?</h2>
+            <p><i>This list can also be <a target="_blank" href="https://hackpad.com/JavaScript-and-Robots-YTdaYRkZzBL">found here</a>.</i></p>
+            <h3>Getting Started</h3>
+            <ul>
+              <li>Nodeschool.io interactive <a target="_blank" href="https://github.com/tableflip/nodebot-workshop">Nodebots workshop</a>!</li>
+              <li>Exhaustive list of <a target="_blank" href="https://github.com/rwaldron/johnny-five#many-fragments-some-large-some-small">sample johnny-five programs</a></li>
+              <li><a target="_blank" href="http://markdaggett.com/images/ExpertJavaScript-ch6.pdf">JavaScript IRL, Chapter in Expert JavaScript</a></li>
+              <li><a target="_blank" href="http://nodebots.io/">NodeBots</a></li>
+              <li><a target="_blank" href="http://www.voodootikigod.com/nodebots-the-rise-of-js-robotics/">The Rise of JS Robotics</a></li>
+            </ul>
+          </section>
+          <section>
+            <h3>From the talk</h3>
+            <ul>
+              <li><a target="_blank" href="https://github.com/makenai/sumobot-jr">Sumobot JR</a></li>
+              <li><a target="_blank" href="http://2012.nodeconf.com/theatre/rick_waldron.html">Rick Waldron at NodeConf 2012</a></li>
+            </ul>
+          </section>
+          <section>
+            <h3>Inspirational things</h3>
+            <ul>
+              <li><a target="_blank" href="https://www.youtube.com/watch?v=yNi3IPkTOos">Donovan's hexabot talk at EmpireJS</a></li>
+              <li><a target="_blank" href="http://blog.spark.io/2014/01/17/open-source-thermostat/">Nest DIY with Spark Core</a></li>
+              <li><a target="_blank" href="https://www.youtube.com/playlist?list=PLAHwRHEbVmP4DmUFKVzufqI92dmo57gIK">RobotsConf 2013 Videos</a></li>
+            </ul>
+          </section>
+          <section>
+            <h3>Places to get things</h3>
+            <ul>
+              <li><a target="_blank" href="http://www.microcenter.com/site/stores/houston.aspx?gclid=CjwKEAiAk8qkBRDOqYediILQ5BMSJAB40A5U3Q6Dw9mAC1vKKTStoZ5NyLFwutDxeqBFsqxBxuExTxoCbnPw_wcB">MicroCenter</a></li>
+              <li><a target="_blank" href="http://www.frys.com/ac/storeinfo/south_houston-location-frys-electronics-hours-maps-directions">Fry's</a></li>
+              <li><a target="_blank" href="http://www.epohouston.com/">Electronic Parts Outlet</a></li>
+              <li><a target="_blank" href="http://www.adafruit.com/">Ada Fruit</a></li>
+              <li><a target="_blank" href="https://www.sparkfun.com/">sparkfun</li>
+            </ul>
+          </section>
+          <section>
+            <h3>People leading the charge</h3>
+            <ul>
+              <li><a target="_blank" href="https://twitter.com/rwaldron">@rwaldron</a></li>
+              <li><a target="_blank" href="https://twitter.com/rockbot">@rockbot</a></li>
+              <li><a target="_blank" href="https://twitter.com/voodootikigod">@voodootikigod</a></li>
+              <li><a target="_blank" href="https://twitter.com/dtex">@dtex</a></li>
+              <li><a target="_blank" href="https://twitter.com/nodebotanist">@nodebotanist</a></li>
+              <li>lots more =)</li>
+            </ul>
+            <p style="margin-top:5em;">Stay in touch with <a target="_blank" href="http://www.meetup.com/houston-js/">HoustonJS</a> for community events.</p>
+          </section>
+        </section>
+      </div>
+
+    </div>
+
+    <script src="revealjs/lib/js/head.min.js"></script>
+    <script src="revealjs/js/reveal.min.js"></script>
+
+    <script>
+
+      // Full list of configuration options available here:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+
+        transition: 'linear', // default/cube/page/concave/zoom/linear/fade/none
+
+        // Optional libraries used to extend on reveal.js
+        dependencies: [
+          { src: 'revealjs/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+          { src: 'revealjs/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+          { src: 'revealjs/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+        ]
+      });
+
+
+      document.getElementById('rick-robot').addEventListener('loadedmetadata', function() {
+        var playLength = this.dataset.endTime - this.dataset.startTime;
+        this.currentTime = this.dataset.startTime;
+      }, false);
+
+    </script>
+
+  </body>
+</html>

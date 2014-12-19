@@ -1,3 +1,10 @@
 node_modules
 .DS_Store
 .env
+
+/client
+/light
+/socketBot
+/twitter
+index.js
+package.json
