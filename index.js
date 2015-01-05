@@ -21,29 +21,33 @@ var five = require('johnny-five'),
   lightBulbSocket = io.of('/light-bulb'),
   socketBotSocket = io.of('/sock-bot'),
 
-  // make a new johnny five instance to interface with the Arduino
-  arduino = new five.Board(),
-
+  arduino,
   sparky;
 
 // load environment variables
 dotenv.load();
 
-// make a new johnny five instance to interface with the spark core
-sparky = new five.Board({
-  io: new Spark({
-    token: process.env.SPARK_TOKEN,
-    deviceId: process.env.SPARK_DEVICE_ID
-  })
-});
+if(!process.env.CLIENT_ONLY){
 
-lightBulb.connectBoard(arduino);
-lightBulb.connectSocket(lightBulbSocket);
+  // make a new johnny five instance to interface with the Arduino
+  arduino = new five.Board(),
 
-socketBot.connectBoard(sparky);
-socketBot.connectSocket(socketBotSocket);
+  // make a new johnny five instance to interface with the spark core
+  sparky = new five.Board({
+    io: new Spark({
+      token: process.env.SPARK_TOKEN,
+      deviceId: process.env.SPARK_DEVICE_ID
+    })
+  });
 
-twitterInput.connectInputSocket();
+  lightBulb.connectBoard(arduino);
+  lightBulb.connectSocket(lightBulbSocket);
+
+  socketBot.connectBoard(sparky);
+  socketBot.connectSocket(socketBotSocket);
+
+  twitterInput.connectInputSocket();
+}
 
 // serve up files from the client folder
 app.use(express.static(__dirname + '/client'));

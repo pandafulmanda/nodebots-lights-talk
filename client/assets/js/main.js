@@ -10,8 +10,8 @@
       '40' : 'backward'
     },
     driveBotEmit = _.debounce( _startDriving, 100, {leading: true, trailing: false}),
-    stopBotEmit = _.debounce( _stopDriving, 100, {leading: false});
-
+    stopBotEmit = _.debounce( _stopDriving, 100, {leading: false}),
+    editor = codeTheBot.init();
 
   // whenever something is clicked or touched
   document.addEventListener('mousedown', function(event){
@@ -26,6 +26,10 @@
 
     if(event.target.dataset.bot){
       driveBotEmit(event.target.dataset.bot);
+    }
+
+    if(event.target.dataset.codeTheBot){
+      editor.runCode();
     }
   });
   // handleButtonStart is the same as the function on mousedown above.
@@ -51,7 +55,6 @@
       driveBotEmit(direction);
     }
   };
-
 
 
 
