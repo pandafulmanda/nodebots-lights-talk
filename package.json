@@ -9,6 +9,7 @@
   "author": "pandafulmanda",
   "license": "MIT",
   "dependencies": {
+    "async-task": "^0.3.25",
     "dotenv": "^0.4.0",
     "express": "^4.10.4",
     "johnny-five": "^0.8.32",
@@ -16,6 +17,7 @@
     "socket.io": "^1.2.1",
     "socket.io-client": "^1.2.1",
     "spark-io": "^0.6.1",
-    "twitter": "^0.2.13"
+    "twitter": "^0.2.13",
+    "workerjs": "^0.1.1"
   }
 }

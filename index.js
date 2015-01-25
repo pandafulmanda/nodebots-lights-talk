@@ -10,6 +10,7 @@ var five = require('johnny-five'),
   // load output and input modules
   lightBulb = require('./light'),
   socketBot = require('./socketBot'),
+  aceBot = require('./aceBot'),
   twitterInput = require('./twitter'),
 
   // set the server and socket
@@ -18,8 +19,9 @@ var five = require('johnny-five'),
   io = socket(server),
 
   // set up sockets
-  lightBulbSocket = io.of('/light-bulb'),
+  // lightBulbSocket = io.of('/light-bulb'),
   socketBotSocket = io.of('/sock-bot'),
+  aceBotSocket = io.of('/ace-bot'),
 
   arduino,
   sparky;
@@ -30,23 +32,27 @@ dotenv.load();
 if(!process.env.CLIENT_ONLY){
 
   // make a new johnny five instance to interface with the Arduino
-  arduino = new five.Board(),
+  // arduino = new five.Board(),
 
   // make a new johnny five instance to interface with the spark core
-  sparky = new five.Board({
-    io: new Spark({
-      token: process.env.SPARK_TOKEN,
-      deviceId: process.env.SPARK_DEVICE_ID
-    })
-  });
+  // sparky = new five.Board({
+  //   io: new Spark({
+  //     token: process.env.SPARK_TOKEN,
+  //     deviceId: process.env.SPARK_DEVICE_ID
+  //   })
+  // });
 
-  lightBulb.connectBoard(arduino);
-  lightBulb.connectSocket(lightBulbSocket);
+  // lightBulb.connectBoard(arduino);
+  // lightBulb.connectSocket(lightBulbSocket);
 
-  socketBot.connectBoard(sparky);
-  socketBot.connectSocket(socketBotSocket);
+  // socketBot.connectBoard(sparky);
+  // // socketBot.connectSocket(socketBotSocket);
+  // socketBot.connectSocket(aceBotSocket);
 
-  twitterInput.connectInputSocket();
+  aceBot.connectBoard();
+  aceBot.connectSocket(aceBotSocket);
+
+  // twitterInput.connectInputSocket();
 }
 
 // serve up files from the client folder
