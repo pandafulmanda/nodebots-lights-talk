@@ -1,14 +1,11 @@
 var five = require('johnny-five'),
-  Spark = require("spark-io"),
+  raspi = require("raspi-io"),
   BotBot = require('../BotBot'),
   bot;
 
-// make a new johnny five instance to interface with the spark core
+// make a new johnny five instance to interface with the raspi
 sparky = new five.Board({
-  io: new Spark({
-    token: process.env.SPARK_TOKEN,
-    deviceId: process.env.SPARK_DEVICE_ID
-  })
+  io: new raspi()
 });
 
 sparky.on('ready', function(){

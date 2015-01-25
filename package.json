@@ -17,6 +17,7 @@
     "socket.io": "^1.2.1",
     "socket.io-client": "^1.2.1",
     "spark-io": "^0.6.1",
+    "raspi-io": "~2.0.3",
     "twitter": "^0.2.13",
     "workerjs": "^0.1.1"
   }

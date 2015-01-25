@@ -15,15 +15,24 @@ function BotBot(botBoard){
     leftWheelPin = 'A0';
     rightWheelPin = 'A1';
   }
+  // If the robot is on the RaspberryPi, we need to change the pins
+  if(botBoard.port === 'RaspberryPi-IO'){
+    // there is only one GPIO on the pi =(
+    leftWheelPin = '';
+    rightWheelPin = 'GPIO18';
+  }
 
-  this.leftWheel  = new five.Servo({ pin:  leftWheelPin, type: 'continuous', board: botBoard }).stop();
+  this.leftWheel  = (leftWheelPin)? new five.Servo({ pin:  leftWheelPin, type: 'continuous', board: botBoard }).stop() : null;
   this.rightWheel = new five.Servo({ pin: rightWheelPin, type: 'continuous', board: botBoard }).stop();
 
 }
 
 BotBot.prototype.stop = function(){
 
-  this.leftWheel.stop();
+  if(this.leftWheel){
+    this.leftWheel.stop();    
+  }
+
   this.rightWheel.stop();
 
   return this;
@@ -43,7 +52,9 @@ BotBot.prototype.drive = function(direction){
 
 function _driveLeft(){
 
-  this.leftWheel.ccw();
+  if(this.leftWheel){
+    this.leftWheel.ccw();
+  }
   this.rightWheel.ccw();
 
   return this;
@@ -51,7 +62,9 @@ function _driveLeft(){
 
 function _driveRight(){
 
-  this.leftWheel.cw();
+  if(this.leftWheel){
+    this.leftWheel.cw();
+  }
   this.rightWheel.cw();
 
   return this;
@@ -59,7 +72,9 @@ function _driveRight(){
 
 function _driveForward(){
 
-  this.leftWheel.ccw();
+  if(this.leftWheel){
+    this.leftWheel.ccw();
+  }
   this.rightWheel.cw();
 
   return this;
@@ -67,7 +82,9 @@ function _driveForward(){
 
 function _driveBackward(){
 
-  this.leftWheel.cw();
+  if(this.leftWheel){
+    this.leftWheel.cw();
+  }
   this.rightWheel.ccw();
 
   return this;
