@@ -48,14 +48,14 @@ function turnFromTilt(x, y, tolerance) {
 
   if (Math.abs(y) > Math.abs(x)){
     if(Math.abs(y) < tolerance) {
-      return ['stop'];
+      return null;
     } else if(y >= 0) {
       return ['drive', 'forward'];
     } else if (y < 0) {
       return ['drive', 'backward'];
     }
   } else if(Math.abs(x) < tolerance) {
-    return ['stop'];
+    return null;
   } else if (x >= 0) {
     return ['drive', 'right'];
   } else if (x < 0) {
