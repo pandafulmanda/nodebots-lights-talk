@@ -6,8 +6,8 @@ var five = require('johnny-five'),
 exports.connectBoard = function(board){
   board.on('ready', function(){
     // Create a johnny-five Relay object that talks to pin 13 and pin 12
-    lights['lightbulb'] = new five.Relay({ pin: 11, type: 'NC'});
-    lights['christmastree'] = new five.Relay({ pin: 12, type: 'NC'});
+    lights['lightbulb'] = new five.Relay({ pin: 5, type: 'NC'});
+    lights['christmastree'] = new five.Relay({ pin: 4, type: 'NC'});
 
   });
 };
