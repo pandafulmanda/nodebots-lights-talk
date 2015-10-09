@@ -14,9 +14,10 @@
     "express": "^4.10.4",
     "johnny-five": "~0.8",
     "lodash": "^2.4.1",
+    "myo": "^2.1.0",
+    "particle-io": "^0.10.1",
     "socket.io": "1.2.1",
     "socket.io-client": "1.2.1",
-    "spark-io": "^0.6.1",
     "twitter": "^0.2.13"
   }
 }
