@@ -10,7 +10,7 @@ var five = require('johnny-five'),
   // load output and input modules
   lightBulb = require('./light'),
   socketBot = require('./socketBot'),
-  twitterInput = require('./twitter'),
+  // twitterInput = require('./twitter'),
 
   // set the server and socket
   app = express(),
@@ -43,7 +43,7 @@ lightBulb.connectSocket(lightBulbSocket);
 socketBot.connectBoard(sparky);
 socketBot.connectSocket(socketBotSocket);
 
-twitterInput.connectInputSocket();
+// twitterInput.connectInputSocket();
 
 // serve up files from the client folder
 app.use(express.static(__dirname + '/client'));
