@@ -2,6 +2,14 @@
 
 var five = require('johnny-five'),
   io = require('socket.io-client'),
+  _ = require('lodash'),
+  lightTilt = {
+    'right': 'lightbulb',
+    'left': 'christmastree',
+    'forward': 'lightbulb',
+    'backward': 'christmastree'
+  },
+  turnOnLightByName = _.debounce(_turnOnLightByName, 100, {leading: true, trailing: false}),
   lights = {}, socketBotSocket, accelerometer;
 
 exports.connectBoard = function(board){
@@ -24,7 +32,7 @@ exports.connectSocket = function(namespaceSocket){
   });
 };
 
-function turnOnLightByName(lightName){
+function _turnOnLightByName(lightName){
   if(lights[lightName]){
     lights[lightName].toggle();
   }
@@ -36,10 +44,19 @@ function connectAccelerometerToBot(){
 
   accelerometer.on("change", function() {
     var direction = turnFromTilt(this.x, this.y);
+    var lightToSwitch;
 
-    if(direction) {
-      socketBotSocket.emit.apply(socketBotSocket, direction);
+    if(direction && direction.length > 1){
+      lightToSwitch = lightTilt[direction[1]];
+
+      if(lightToSwitch){
+        turnOnLightByName(lightToSwitch);
+      }
     }
+
+    // if(direction) {
+    //   socketBotSocket.emit.apply(socketBotSocket, direction);
+    // }
   });
 };
 

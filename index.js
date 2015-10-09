@@ -32,18 +32,20 @@ var five = require('johnny-five'),
 dotenv.load();
 
 // make a new johnny five instance to interface with the spark core
-sparky = new five.Board({
-  io: new Particle({
-    token: process.env.SPARK_TOKEN,
-    deviceId: process.env.SPARK_DEVICE_ID
-  })
-});
+// sparky = new five.Board({
+//   io: new Particle({
+//     token: process.env.SPARK_TOKEN,
+//     deviceId: process.env.SPARK_DEVICE_ID
+//   })
+// });
+
+// socketBot.connectBoard(sparky);
+// socketBot.connectSocket(socketBotSocket);
 
 lightBulb.connectBoard(arduino);
 lightBulb.connectSocket(lightBulbSocket);
 
-socketBot.connectBoard(sparky);
-socketBot.connectSocket(socketBotSocket);
+// myoyo.connect();
 
 // twitterInput.connectInputSocket();
 
