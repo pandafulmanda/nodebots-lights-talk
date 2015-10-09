@@ -2,7 +2,7 @@
 
 // require packages
 var five = require('johnny-five'),
-  Spark = require("spark-io"),
+  Particle = require("particle-io"),
   express = require('express'),
   socket = require('socket.io'),
   dotenv = require('dotenv'),
@@ -24,24 +24,28 @@ var five = require('johnny-five'),
   // make a new johnny five instance to interface with the Arduino
   arduino = new five.Board(),
 
+  // myoyo = require('./myo'),
+
   sparky;
 
 // load environment variables
 dotenv.load();
 
 // make a new johnny five instance to interface with the spark core
-sparky = new five.Board({
-  io: new Spark({
-    token: process.env.SPARK_TOKEN,
-    deviceId: process.env.SPARK_DEVICE_ID
-  })
-});
+// sparky = new five.Board({
+//   io: new Particle({
+//     token: process.env.SPARK_TOKEN,
+//     deviceId: process.env.SPARK_DEVICE_ID
+//   })
+// });
+
+// socketBot.connectBoard(sparky);
+// socketBot.connectSocket(socketBotSocket);
 
 lightBulb.connectBoard(arduino);
 lightBulb.connectSocket(lightBulbSocket);
 
-socketBot.connectBoard(sparky);
-socketBot.connectSocket(socketBotSocket);
+// myoyo.connect();
 
 // twitterInput.connectInputSocket();
 

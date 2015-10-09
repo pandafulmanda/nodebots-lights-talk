@@ -7,6 +7,7 @@ exports.connectBoard = function(board){
 
   board.on('ready', function(){
     var botBoard = this;
+    console.info('particle board connected!')
 
     bot = new BotBot(botBoard);
   });
@@ -36,14 +37,18 @@ function BotBot(botBoard){
   var leftWheelPin = 9,
     rightWheelPin = 10;
 
-  // If the robot is on the spark board, we need to change the pins
-  if(botBoard.port === 'spark-io'){
+  // If the robot is on the particle board, we need to change the pins
+  if(botBoard.port === 'particle-io'){
     leftWheelPin = 'A0';
     rightWheelPin = 'A1';
   }
 
   this.leftWheel  = new five.Servo({ pin:  leftWheelPin, type: 'continuous', board: botBoard }).stop();
   this.rightWheel = new five.Servo({ pin: rightWheelPin, type: 'continuous', board: botBoard }).stop();
+
+  console.info('new bot made');
+
+  return this;
 
 }
 
